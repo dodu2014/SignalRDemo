@@ -28,12 +28,9 @@ namespace SignalRDemo
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
+            services.AddHttpContextAccessor();
             services.AddSignalR(configure => { configure.EnableDetailedErrors = true; });
-
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             ServicesContext.Provider = services.BuildServiceProvider(true); //注册服务上下文对象
 
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using SignalRDemo.Hubs;
@@ -26,11 +27,13 @@ namespace SignalRDemo.Controllers
         public async Task<IActionResult> TestAsync(string mode = "controller") {
             switch (mode.ToLower()) {
                 case "controller":
-                    await hubContext.Clients.All.SendAsync("OnResponse", new { desc = "from controller" });
+                    await hubContext.Clients.All.SendAsync("OnResponse", new { desc = "from HomeController" });
                     break;
                 case "service":
-                    var _hc = ServicesContext.Provider.GetRequiredService<IHubContext<TestHub>>();
-                    await _hc.Clients.All.SendAsync("OnResponse", new { desc = "from ServicesContext.Provider" });
+                    //var _hc = ServicesContext.Provider.GetRequiredService<IHubContext<TestHub>>();
+                    var httpContextAccessor = ServicesContext.Provider.GetRequiredService<IHttpContextAccessor>();
+                    var _hc = httpContextAccessor.HttpContext.RequestServices.GetRequiredService<IHubContext<TestHub>>();
+                    await _hc.Clients.All.SendAsync("OnResponse", new { desc = "from HttpContext.RequestServices.GetRequiredService" });
                     break;
                 default:
                     break;
