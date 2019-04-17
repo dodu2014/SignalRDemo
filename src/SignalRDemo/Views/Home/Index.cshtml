@@ -2,18 +2,18 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="jumbotron">
+    <h1 class="display-4">asp.net core 使用 signalR 的示例</h1>
+    <p>下面通过两种方式, 来获取 IHubContext 实例, 并广播消息到客户端. 第二种方式是不能正常工作的.</p>
 </div>
 
 <div class="mb-4">
-    <button type="button" class="btn btn-secondary" id="test1" data-mode="controller">从控制器注入 IHubContext</button>
-    <button type="button" class="btn btn-secondary" id="test2" data-mode="service">从 IServiceProvider 获取 IHubContext</button>
+    <button type="button" class="btn btn-primary" id="test1" data-mode="controller">方式1: 从控制器构造中获取 IHubContext</button>
+    <button type="button" class="btn btn-primary" id="test2" data-mode="service">方式2: 从 IServiceProvider 获取 IHubContext</button>
 </div>
 
 <div class="alert alert-warning">
-    <ul id="log" class="mb-0"></ul>
+    <ul id="log" class="mb-0 list-unstyled"></ul>
 </div>
 
 @section scripts {
@@ -22,7 +22,9 @@
     $(function () {
 
         let log = result => {
-            $('#log').append($('<li>').text(result));
+            let $li = $('<li>').text(result);
+            if (!result) $li.addClass('my-3');
+            $('#log').append($li);
         };
 
         const connect = new signalR.HubConnectionBuilder()
@@ -33,11 +35,12 @@
         //注册服务端的响应处理程序
         connect.on("OnResponse", res => {
             console.log(res);
-            log(`signalR 结果: ${res.desc}`);
+            log(`├ signalR 结果: ${res.desc}`);
         });
 
         connect.start().then(() => {
             log('signalR 服务连接成功, 可以设置连接成功后的其他操作');
+            log('');
         }).catch(function (err) {
             log(err.toString());
             return console.error(err.toString());
@@ -45,10 +48,11 @@
 
         $('#test1, #test2').click(function () {
             let mode = $(this).attr('data-mode');
-            log(`开始请求: ${mode}`);
+            log(`┌ 开始请求, 方式: ${mode}`);
             $.get('/home/test', { mode }, res => {
                 console.log(res);
-                log(`请求完成: ${res}`);
+                log(`└ 请求完成: ${res}`);
+                log('');
             });
         });
     });
