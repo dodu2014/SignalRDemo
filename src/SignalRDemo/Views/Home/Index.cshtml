@@ -21,9 +21,10 @@
 <script>
     $(function () {
 
-        let log = result => {
+        let log = (result, strong) => {
             let $li = $('<li>').text(result);
             if (!result) $li.addClass('my-3');
+            if (strong) $li.addClass('font-weight-bold');
             $('#log').append($li);
         };
 
@@ -35,7 +36,7 @@
         //注册服务端的响应处理程序
         connect.on("OnResponse", res => {
             console.log(res);
-            log(`├ signalR 结果: ${res.desc}`);
+            log(`├ signalR 结果: ${res.desc}`, true);
         });
 
         connect.start().then(() => {
@@ -51,10 +52,13 @@
             log(`┌ 开始请求, 方式: ${mode}`);
             $.get('/home/test', { mode }, res => {
                 console.log(res);
-                log(`└ 请求完成: ${res}`);
-                log('');
+                window.setTimeout(() => {
+                    log(`└ 请求完成: ${res}`);
+                    log('');
+                });
             });
         });
+
     });
 
 </script>
