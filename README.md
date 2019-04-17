@@ -4,6 +4,29 @@ asp.net core 中使用 signalR 的示例
 
 也为需要学习 signalr 的同学们提供示例, 希望能提供帮助.
 
+**主要代码快速导航:**
+
+> js: [](https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Views/Home/Index.cshtml)
+>
+> hub: [](https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Hubs/TestHub.cs)
+>
+> controller: [](https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Controllers/HomeController.cs)
+
+### signalR 配置:
+
+```c#
+// ConfigureServices
+services.AddSignalR(configure => { configure.EnableDetailedErrors = true; });
+ServicesContext.Provider = services.BuildServiceProvider(true); //注册服务上下文对象
+
+// Configure
+app.UseSignalR(routes => {
+    routes.MapHub<TestHub>("/hubs/test");
+});
+```
+
+
+
 ### 现在存在的问题
 我需要在自定义类中获取 DI 中的服务的示例. 如果是在控制器中获取 IHubContext 示例, 是可以正常使用的, 但通过 IServiceProvider 获取到的示例, 也非null, 但无法正常工作.
 
