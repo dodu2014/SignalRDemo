@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="mb-4">
+    <button type="button" class="btn btn-secondary" id="test1" data-mode="controller">从控制器注入 IHubContext</button>
+    <button type="button" class="btn btn-secondary" id="test2" data-mode="service">从 IServiceProvider 获取 IHubContext</button>
+</div>
+
+<div class="alert alert-warning">
+    <ul id="log" class="mb-0"></ul>
+</div>
+
+@section scripts {
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script>
+    $(function () {
+
+        let log = result => {
+            $('#log').append($('<li>').text(result));
+        };
+
+        const connect = new signalR.HubConnectionBuilder()
+            .withUrl("/hubs/test")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        //注册服务端的响应处理程序
+        connect.on("OnResponse", res => {
+            console.log(res);
+            log(`signalR 结果: ${res.desc}`);
+        });
+
+        connect.start().then(() => {
+            log('signalR 服务连接成功, 可以设置连接成功后的其他操作');
+        }).catch(function (err) {
+            log(err.toString());
+            return console.error(err.toString());
+        });
+
+        $('#test1, #test2').click(function () {
+            let mode = $(this).attr('data-mode');
+            log(`开始请求: ${mode}`);
+            $.get('/home/test', { mode }, res => {
+                console.log(res);
+                log(`请求完成: ${res}`);
+            });
+        });
+    });
+
+</script>
+}
