@@ -6,11 +6,11 @@ asp.net core 中使用 signalR 的示例
 
 **主要代码快速导航:**
 
-> js: [](https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Views/Home/Index.cshtml)
+> js: [https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Views/Home/Index.cshtml](https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Views/Home/Index.cshtml)
 >
-> hub: [](https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Hubs/TestHub.cs)
+> hub: [https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Hubs/TestHub.cs](https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Hubs/TestHub.cs)
 >
-> controller: [](https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Controllers/HomeController.cs)
+> controller: [https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Controllers/HomeController.cs](https://github.com/dodu2014/SignalRDemo/blob/master/src/SignalRDemo/Controllers/HomeController.cs)
 
 ### signalR 配置:
 
